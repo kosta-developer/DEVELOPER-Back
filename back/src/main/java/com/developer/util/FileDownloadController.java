@@ -208,8 +208,8 @@ public class FileDownloadController {
 	public ResponseEntity<?> downloadLesson(String imgPath, int type, String opt) throws FindException {
 
 		
-		String saveDirectory = "C:\\dev\\lesson";
-//		String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/lesson";
+//		String saveDirectory = "C:\\dev\\lesson";
+		String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/lesson";
 		
 		String fileName = "";
 		if (type == 2) {
