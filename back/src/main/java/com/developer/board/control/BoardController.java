@@ -67,7 +67,9 @@ public class BoardController {
 		if (logined == null) { // 로그인 안한 경우
 			throw new FindException("로그인하세요");
 		}
-		String savdDirectory = "/Users/choigeunhyeong/Documents/attach";
+//		String savdDirectory = "/Users/choigeunhyeong/Documents/attach";
+		String savdDirectory = "/Users/moonone/Desktop/KOSTA/img/board";
+		
 		File saveDirFile = new File(savdDirectory);
 		String fileName = null;
 
@@ -179,75 +181,81 @@ public class BoardController {
 	 */
 	@PostMapping(value = "edit/{postSeq}", consumes = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<?> editBoard(BoardDTO.editBoardDTO editBoardDTO, @PathVariable Long postSeq,
-			@RequestPart(value = "f", required = false) MultipartFile f)
+	public ResponseEntity<?> editBoard(
+			BoardDTO.editBoardDTO editBoardDTO, 
+			@PathVariable Long postSeq,
+			@RequestPart(value = "f", required = false) 
+			MultipartFile f)
 			throws AddException, FindException, ModifyException {
 
 		logger.error("파일확인: " + f.toString());
 
-		String savdDirectory = "/Users/choigeunhyeong/Documents/attach";
+//		String savdDirectory = "/Users/choigeunhyeong/Documents/attach";
+		String savdDirectory = "/Users/moonone/Desktop/KOSTA/img/board";
 		File saveDirFile = new File(savdDirectory);
 		String fileName = null;
-		if (f != null && f.getSize() > 0) {
+		
+		if (f != null && f.getSize() > 0) {//첨부된 파일이 존재하고 
+			
 			String fOrigin = f.getOriginalFilename();
 
 			Optional<Board> b = bRepository.findById(postSeq);
 
 			String oldFileName = b.get().getImgPath();
-			File oldFile = new File(saveDirFile, oldFileName);
-			if (oldFile.exists()) {
-				oldFile.delete();
-			}
-
-			UUID uuid = UUID.randomUUID();
-			String fName = uuid.toString() + "_" + fOrigin;
-
-			fileName = fName;
-			File file = new File(saveDirFile, fileName);
-			try {
-
-				Attach.upload(f.getBytes(), file);
-				// 섬네일파일 만들기 (비율맞춰서된다!)
-				int width = 300;
-				int height = 300;
-
-				String thumbFileName = "t_" + fileName; // 섬네일파일명
-				File thumbFile = new File(saveDirFile, thumbFileName);
-				FileOutputStream thumbnailOS = new FileOutputStream(thumbFile);
-				InputStream thumbnailIS = f.getInputStream();
-
-				Thumbnailator.createThumbnail(thumbnailIS, thumbnailOS, width, height);
-				String oldthumbFileName = "t_" + b.get().getImgPath();
-				;
-				File oldthumbFile = new File(saveDirFile, oldthumbFileName);
-
-				if (oldthumbFile.exists()) {
-					oldthumbFile.delete();
+			if(!fOrigin.equals(oldFileName)) { //첨부된 파일이 기존파일이다
+				
+				//기존파일이 있는경우에만 실행
+				if(oldFileName!= null) {
+					File oldFile = new File(saveDirFile, oldFileName);
+					if (oldFile.exists()) {
+						oldFile.delete();
+						System.out.println("delete");
+					}
 				}
 
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.error("파일업로드 에러");
-				throw new ModifyException(e.getMessage());
+				UUID uuid = UUID.randomUUID();
+				String fName = uuid.toString() + "_" + fOrigin;
+	
+				fileName = fName;
+				File file = new File(saveDirFile, fileName);
+				
+				try {
+					
+					Attach.upload(f.getBytes(), file);
+					System.out.println("파일: " +file.length()+ ", 파일크기:"+f.getBytes());
+					
+					// 섬네일파일 만들기 (비율맞춰서된다!)
+					int width = 300;
+					int height = 300;
+	
+					String thumbFileName = "t_" + fileName; // 섬네일파일명
+					File thumbFile = new File(saveDirFile, thumbFileName);
+					FileOutputStream thumbnailOS = new FileOutputStream(thumbFile);
+					InputStream thumbnailIS = f.getInputStream();
+	
+					Thumbnailator.createThumbnail(thumbnailIS, thumbnailOS, width, height);
+					String oldthumbFileName = "t_" + b.get().getImgPath();
+					;
+					File oldthumbFile = new File(saveDirFile, oldthumbFileName);
+	
+					if (oldthumbFile.exists()) {
+						oldthumbFile.delete();
+					}
+					editBoardDTO.setImgPath(fName);
+					
+	
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.error("파일업로드 에러");
+					throw new ModifyException(e.getMessage());
+				}
 			}
 		}
-
-		// String userId = (String) session.getAttribute("logined");
-		if (editBoardDTO.getImgPath() == null) {
-			Optional<Board> b = bRepository.findById(postSeq);
-			fileName = b.get().getImgPath();
-		}
-
-		if (f.getSize() > 0) {
-			logger.error("f.getName: " + f.getOriginalFilename());
-			UUID uuid = UUID.randomUUID();
-			String fName = uuid.toString() + "_";
-			fileName = fName + f.getOriginalFilename();
-		}
-
-		editBoardDTO.setImgPath(fileName);
-
 		bService.editBoard(editBoardDTO, postSeq);
+
+		
+
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 

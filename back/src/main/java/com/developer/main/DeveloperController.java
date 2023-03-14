@@ -67,7 +67,8 @@ public class DeveloperController {
 	@GetMapping("download")
 	public ResponseEntity<?> download(String boardNum, int type) throws FindException {
 
-		String saveDirectory = "C:\\dev\\lesson";
+//		String saveDirectory = "C:\\dev\\lesson";
+		String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/lesson";
 
 		String fileName = "";
 		if (type == 2) {

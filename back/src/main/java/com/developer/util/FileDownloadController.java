@@ -33,7 +33,8 @@ public class FileDownloadController {
     @GetMapping("board")
     public ResponseEntity<?> download(String imgPath, int type, String opt) throws FindException {
 
-        String saveDirectory = "/Users/choigeunhyeong/Documents/attach";
+//        String saveDirectory = "/Users/choigeunhyeong/Documents/attach";
+        String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/board";
 
         String fileName = "";
         if (type == 2) {
@@ -63,12 +64,12 @@ public class FileDownloadController {
             headers.add(HttpHeaders.CONTENT_LENGTH, "" + file.length());
 
             if ("attachment".equals(opt)) {
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename*=UTF-8''"
-                        + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"));
-            } else {
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename*=UTF-8''"
-                        + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"));
-            }
+				headers.add(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));// 다운로드
+			} else {
+				headers.add(HttpHeaders.CONTENT_DISPOSITION,
+						"inline;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));// 바로응답
+			}
 
             byte[] bArr = FileCopyUtils.copyToByteArray(file);
             ResponseEntity<?> re = new ResponseEntity<>(bArr, headers, HttpStatus.OK);
@@ -91,7 +92,8 @@ public class FileDownloadController {
             @GetMapping("mypage/complete")
             public ResponseEntity<?> downloadCompleteLesson(String imgPath, int type, String opt) throws FindException {
 
-                String saveDirectory = "/Users/choigeunhyeong/Documents/attach";
+//                String saveDirectory = "/Users/choigeunhyeong/Documents/attach";
+            	String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/lesson";
                 
                 String fileName = "";
                 if (type == 2) {
@@ -121,12 +123,12 @@ public class FileDownloadController {
                     headers.add(HttpHeaders.CONTENT_LENGTH, "" + file.length());
 
                     if ("attachment".equals(opt)) {
-                        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename*=UTF-8''"
-                                + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"));
-                    } else {
-                        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename*=UTF-8''"
-                                + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"));
-                    }
+        				headers.add(HttpHeaders.CONTENT_DISPOSITION,
+        						"attachment;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));// 다운로드
+        			} else {
+        				headers.add(HttpHeaders.CONTENT_DISPOSITION,
+        						"inline;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));// 바로응답
+        			}
 
                     byte[] bArr = FileCopyUtils.copyToByteArray(file);
                     ResponseEntity<?> re = new ResponseEntity<>(bArr, headers, HttpStatus.OK);
@@ -149,7 +151,8 @@ public class FileDownloadController {
             @GetMapping("admin/studyroom")
             public ResponseEntity<?> downloadStudyroomImg(String imgPath, int type, String opt) throws FindException {
 
-                String saveDirectory = "/Users/choigeunhyeong/Documents/attach";
+//                String saveDirectory = "/Users/choigeunhyeong/Documents/attach";
+            	String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/studyroom";
                 
                 String fileName = "";
                 if (type == 2) {
@@ -179,12 +182,12 @@ public class FileDownloadController {
                     headers.add(HttpHeaders.CONTENT_LENGTH, "" + file.length());
 
                     if ("attachment".equals(opt)) {
-                        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename*=UTF-8''"
-                                + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"));
-                    } else {
-                        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename*=UTF-8''"
-                                + URLEncoder.encode(file.getName(), "UTF-8").replace("+", "%20"));
-                    }
+        				headers.add(HttpHeaders.CONTENT_DISPOSITION,
+        						"attachment;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));// 다운로드
+        			} else {
+        				headers.add(HttpHeaders.CONTENT_DISPOSITION,
+        						"inline;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));// 바로응답
+        			}
 
                     byte[] bArr = FileCopyUtils.copyToByteArray(file);
                     ResponseEntity<?> re = new ResponseEntity<>(bArr, headers, HttpStatus.OK);
@@ -339,7 +342,8 @@ public class FileDownloadController {
 	@GetMapping("studyroom")
 	public ResponseEntity<?> downloadCafe(String imgPath, int type, String opt) throws FindException {
 
-		String saveDirectory = "C:\\dev\\studyroom";
+//		String saveDirectory = "C:\\dev\\studyroom";
+		String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/studyroom";
 
 		String fileName = "";
 		if (type == 2) {
@@ -398,7 +402,8 @@ public class FileDownloadController {
 	@GetMapping("roominfo")
 	public ResponseEntity<?> downloadRoom(String imgPath, int type, String opt) throws FindException {
 
-		String saveDirectory = "C:\\dev\\roominfo";
+//		String saveDirectory = "C:\\dev\\roominfo";
+		String saveDirectory = "/Users/moonone/Desktop/KOSTA/img/roominfo";
 
 		String fileName = "";
 		if (type == 2) {
